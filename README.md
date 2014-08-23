@@ -2,7 +2,7 @@ NGINX-Tomcat-Redis-
 ===================
 
 实现NGINX+Tomcat+Redis一起进行集群，进行分布处理用户的信息
-
+----
 NGINX配置文件思路就是当客户端访问tomcat（因为其就是一个服务器）的时候， 
 就会产生一个sessionid，可以作为key存到redis，value可以是个user，集合等，
 我用的是用户，因为负载均衡，当我再次发送请求的时候不一定访问的是当前的tomcat，
@@ -10,7 +10,7 @@ NGINX配置文件思路就是当客户端访问tomcat（因为其就是一个服
 其存是需要解决的，所以我就将在第一次访问的时候就产生的sessionid存到cookie里，
 再次访问的时候因为cookie是存在客户端的，取出cookie里的sessionid，
 用此sessionid取出redis里第一次访问存的用户名与这次访问的用户名做比较，如果相同直接进行连接。
-
+~~~
 user root; #用户名
 worker_processes  3;
 pid logs/nginx.pid;
@@ -221,3 +221,4 @@ nginx:192.168.214.130 | tomcat:192.168.214.130 添加redis keyabcd
 http://192.168.214.130:9999/redisdemo/main.do?userName=abcd进入，实现负载均衡，页面分别显示
 nginx:192.168.214.130 | tomcat:192.168.214.130 取得redis keyabcd
 nginx:192.168.214.130 | tomcat:192.168.214.132 取得redis keyabcd
+~~~
